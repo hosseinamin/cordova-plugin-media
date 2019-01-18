@@ -27,6 +27,7 @@
 
 @implementation CDVSound
 
+BOOL ignoreAVAudioSession = NO;
 BOOL keepAvAudioSessionAlwaysActive = NO;
 
 @synthesize soundCache, avSession, currMediaId, statusCallbackId;
@@ -34,6 +35,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
 -(void) pluginInitialize
 {
     NSDictionary* settings = self.commandDelegate.settings;
+    ignoreAVAudioSession = [[settings objectForKey:[@"CordovaMediaIgnoreAVAudioSession" lowercaseString]] boolValue];
     keepAvAudioSessionAlwaysActive = [[settings objectForKey:[@"KeepAVAudioSessionAlwaysActive" lowercaseString]] boolValue];
     if (keepAvAudioSessionAlwaysActive) {
         if ([self hasAudioSession]) {
@@ -207,7 +209,9 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
 - (BOOL)hasAudioSession
 {
     BOOL bSession = YES;
-
+    if (ignoreAVAudioSession) {
+        return NO;
+    }
     if (!self.avSession) {
         NSError* error = nil;
 
