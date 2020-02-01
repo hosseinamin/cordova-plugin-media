@@ -693,7 +693,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
             }
             // get the audioSession and set the category to allow recording when device is locked or ring/silent switch engaged
             if ([weakSelf hasAudioSession]) {
-                if (![weakSelf.avSession.category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
+                if (![weakSelf.avSession.category isEqualToString:AVAudioSessionCategoryRecord]) {
                     [weakSelf.avSession setCategory:AVAudioSessionCategoryRecord error:nil];
                 }
 
